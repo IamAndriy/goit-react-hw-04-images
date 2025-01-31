@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Modal } from "components/Modal/Modal";
@@ -8,7 +9,6 @@ export const App = () => {
     const [filter, setFilter] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [image, setImage] = useState({src: "", alt: ""});
-
 
     const onSubmitHandle = (value) =>{
         if (!value.trim()){
@@ -34,3 +34,8 @@ export const App = () => {
             </>
 }
 
+App.propTypes = {
+    filter : PropTypes.string,
+    isModalOpen: PropTypes.bool,
+    image: PropTypes.object
+}

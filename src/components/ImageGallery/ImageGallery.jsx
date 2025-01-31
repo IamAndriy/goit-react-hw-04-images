@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchImagesFromAPI } from "Api/api";
 import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
 import { Loader } from "components/Loader/Loader";
 import { Button } from "components/Button/Button";
 import { nanoid } from "nanoid";
 import css from "./ImageGallery.module.css";
+import PropTypes, { object } from "prop-types";
 
 export const ImageGallery = ({filter, onGalleryClick}) => {
 
@@ -15,6 +16,8 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
     const [page, setPage] = useState(1);
     const [per_page, setPerPage] = useState(12);
     const [error, setError] = useState(null);
+
+    const endOfGellaryRef = useRef();
 
     useEffect(()=>{
 
@@ -66,6 +69,11 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
 
     }, [filter, page, per_page]);
     
+    useEffect(()=>{
+        const count = gallery.length;
+        const top = endOfGellaryRef.current.offsetTop;
+        window.scrollTo({top: ((top/count)*(count-12)-200),  behavior: "smooth",});
+    },[gallery.length]);
 
     const onGalleryClickHandle = ({target}) => {
 
@@ -90,8 +98,11 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
                                                                         onGalleryItemClick={onGalleryClickHandle}
                                                     />})}
                         </ul>
+      
                 }
 
+                  <p ref={endOfGellaryRef}></p>
+                    
                 { isLoading && <Loader /> }
 
                 { error && <p>Error! "{error}"</p>}
@@ -102,3 +113,14 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
             
 }
 
+ImageGallery.propTypes = {
+    isLoading : PropTypes.bool,
+    isEmpty : PropTypes.bool,
+    isButtonShown: PropTypes.bool,
+    gallery: PropTypes.arrayOf(object),
+    page: PropTypes.number,
+    per_page: PropTypes.number,
+    error: PropTypes.string,
+    filter: PropTypes.string,
+    onGalleryClick: PropTypes.func,
+}
