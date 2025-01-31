@@ -1,37 +1,33 @@
-import { Component } from "react";
+import { useEffect } from "react";
 import css from "./Modal.module.css"
 
-export class Modal extends Component{    
+export const Modal = ({image, onClose}) => {    
  
-    componentDidMount = () => {
-        window.addEventListener('keydown', this.onEscapeKeyDown);
-    }
+    useEffect(()=>{
+        
+        const onEscapeKeyDown = ({code}) => {
+            if (code === 'Escape') {
+                onClose();
+            }
+        }
+        
+        window.addEventListener('keydown', onEscapeKeyDown);
 
-    componentWillUnmount = () => {
-        window.removeEventListener('keydown', this.onEscapeKeyDown);
-    }
+        return ()=>{window.removeEventListener('keydown', onEscapeKeyDown)}
 
-    onOverlayClick = ({target, currentTarget}) => {
+    }, [onClose]);
+
+    const onOverlayClick = ({target, currentTarget}) => {
 
         if (target === currentTarget) {
-            this.props.onClose();
+            onClose();
         }
     }
 
-    onEscapeKeyDown = ({code}) => {
-        if (code === 'Escape') {
-            this.props.onClose();
-        }
-    }
-
-    render(){
-        
-        const {src, alt} = this.props.image;
-
-        return  <div className={css.overlay} onClick={this.onOverlayClick}>
-                    <div className={css.modal}>
-                        <img className={css.image} src={src} alt={alt} />
-                    </div>
+    return  <div className={css.overlay} onClick={onOverlayClick}>
+                <div className={css.modal}>
+                    <img className={css.image} src={image.src} alt={image.alt} />
                 </div>
-    }
+            </div>
+
 }
