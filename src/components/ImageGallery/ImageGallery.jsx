@@ -60,7 +60,6 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
             
         }
 
-        console.log("filter=",filter);
         getGallery(filter);
 
         return ()=>{  abortCtrl.abort() }        
