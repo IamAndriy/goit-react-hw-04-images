@@ -7,6 +7,7 @@ import { nanoid } from "nanoid";
 import css from "./ImageGallery.module.css";
 import PropTypes, { object } from "prop-types";
 
+
 export const ImageGallery = ({filter, onGalleryClick}) => {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -38,16 +39,16 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
     useEffect( ()=>{
 
         const abortCtrl = new AbortController();
-        
+
         if (!filter) return;
 
         const getGallery = async (query) => {
 
             try {
                 setIsLoading(true);   
-                
+
                 const {hits, totalHits} = await fetchImagesFromAPI(query, page, per_page, abortCtrl);
-    
+ 
                 if (!hits.length){
                     return setIsEmpty(true);
                 }
@@ -56,7 +57,9 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
                 setIsButtonShown( (page < Math.ceil(totalHits / per_page)));
     
             } catch (error) {
-                setError(error);
+                if (!abortCtrl.signal?.aborted) {
+                    setError(error);
+                }                
             } finally{
                 setIsLoading(false);
             }
@@ -101,7 +104,7 @@ export const ImageGallery = ({filter, onGalleryClick}) => {
       
                 }
 
-                  <p ref={endOfGellaryRef}></p>
+                <p ref={endOfGellaryRef}> </p>
                     
                 { isLoading && <Loader /> }
 

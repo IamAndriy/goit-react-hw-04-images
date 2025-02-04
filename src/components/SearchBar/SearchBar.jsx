@@ -9,7 +9,7 @@ export const SearchBar = ({onSubmit}) => {
     const onFormSubmit = (e) => {
         e.preventDefault();
         onSubmit(filter);
-        setFilter("");
+        // setFilter("");
     }
 
     const onFilterChange = ({target}) => {
