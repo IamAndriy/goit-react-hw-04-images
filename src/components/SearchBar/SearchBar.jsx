@@ -1,6 +1,7 @@
 import { useState } from "react";
 import css from "./SearchBar.module.css";
 import {ImSearch} from "react-icons/im";
+import PropTypes from "prop-types";
 
 export const SearchBar = ({onSubmit}) => {
 
@@ -37,4 +38,8 @@ export const SearchBar = ({onSubmit}) => {
                 </form>
 
             </header>
+}
+
+SearchBar.propTypes = {
+    onSubmit: PropTypes.func,
 }
